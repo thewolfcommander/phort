@@ -1,23 +1,34 @@
 #!/bin/bash
 
+# Inputs
 boilerplate_choice=$1
 chosen_directory=$2
 project_name=$3
 github_repo=$4
+project_description=$5
+
 
 echo "Project will be set up in: $chosen_directory/$project_name"
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-# Change to the chosen directory
+# Constants
+requirements_file="${script_dir}/boilerplates/${boilerplate_choice}/requirements.txt"
+boilerplate_script="${script_dir}/boilerplates/${boilerplate_choice}/execute.sh"
+helpers_dir="${script_dir}/helpers"
+project_dir="${chosen_directory}/$project_name"
+
+# Creating project directory
 cd "$chosen_directory"
 mkdir "$project_name"
 cd "$project_name"
+git init
+cp "${helpers_dir}/gitignore.txt" "$project_dir/.gitignore"
 
-# ... [rest of the script]
+if [ -z "$project_description" ]; then
+    project_description="# $project_name Project Generated from the Best Django Boilerplate, created by thewolfcommander for the community"
+fi
 
-# Use absolute paths for boilerplate files
-requirements_file="${script_dir}/boilerplates/${boilerplate_choice}/requirements.txt"
-boilerplate_script="${script_dir}/boilerplates/${boilerplate_choice}/execute.sh"
+echo "$project_description" >> "$project_dir/README.md"
 
 # Step 1: Install virtualenv if not already
 if ! command -v virtualenv &> /dev/null
@@ -52,9 +63,9 @@ case "$(uname -s)" in
 esac
 
 echo "Virtual environment activated."
+echo "Configuration Directory: ${script_dir}/boilerplates/${boilerplate_choice}/"
 
 # Step 4: Install dependencies from requirements file
-requirements_file="boilerplates/${boilerplate_choice}/requirements.txt"
 if [ -f "$requirements_file" ]; then
     echo "Installing dependencies from $requirements_file"
     pip install -r $requirements_file
@@ -63,11 +74,13 @@ else
     exit 1
 fi
 
+# Freeze the requirements to file
+pip freeze > "$project_dir/requirements.txt"
+
 # Step 5: Pass control to another script to generate the boilerplate
-boilerplate_script="boilerplates/${boilerplate_choice}/execute.sh"
 if [ -f "$boilerplate_script" ]; then
     echo "Executing boilerplate setup script: $boilerplate_script"
-    bash $boilerplate_script
+    bash $boilerplate_script "$chosen_directory" "$project_name"
 else
     echo "Boilerplate script not found for the selected choice."
     exit 1

@@ -31,6 +31,7 @@ default_directory=$(dirname $(dirname $(realpath $0)))
 read -p "Enter the directory for the project (default: $default_directory): " chosen_directory
 chosen_directory=${chosen_directory:-$default_directory}
 
+read -p "Enter a description for your project (Optional): " project_description
 
 echo "Please choose the type of Django boilerplate you want to use:"
 echo "1) Simple Django app with SQLite3"
@@ -50,10 +51,10 @@ read -p "Enter your choice (1-2): " env_setup_choice
 # Execute the appropriate script based on the user's choice
 case $env_setup_choice in
     1) 
-        ./setup_poetry.sh $boilerplate_choice "$chosen_directory" "$project_name" "$github_repo"
+        ./setup_poetry.sh $boilerplate_choice "$chosen_directory" "$project_name" "$github_repo" "$project_description"
         ;;
     2) 
-        ./setup_virtualenv.sh $boilerplate_choice "$chosen_directory" "$project_name" "$github_repo"
+        ./setup_virtualenv.sh $boilerplate_choice "$chosen_directory" "$project_name" "$github_repo" "$project_description"
         ;;
     *)
         echo "Invalid choice. Exiting."

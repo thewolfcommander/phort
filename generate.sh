@@ -1,76 +1,69 @@
 #!/bin/bash
 
-echo -e "\n\033[1mProject successfully created! Enjoy coding with Django!\033[0m"
-echo -e "\e[38;5;196m\e[1m █████╗░░█████╗░░█████╗░██╗░░██╗███████╗███╗░░██╗██╗░░██╗"
-echo -e "\e[38;5;208m\e[1m██╔══██╗██╔══██╗██╔══██╗██║░░██║██╔════╝████╗░██║╚██╗██╔╝"
-echo -e "\e[38;5;220m\e[1m███████║██║░░██║██║░░██║███████║█████╗░░██╔██╗██║░╚███╔╝░"
-echo -e "\e[38;5;46m\e[1m██╔══██║██║░░██║██║░░██║██╔══██║██╔══╝░░██║╚████║░██╔██╗░"
-echo -e "\e[38;5;48m\e[1m██║░░██║╚█████╔╝╚█████╔╝██║░░██║███████╗██║░╚███║██╔╝╚██╗"
-echo -e "\e[38;5;93m\e[1m╚═╝░░╚═╝░╚════╝░░╚════╝░╚═╝░"
+# Greet with ASCII art "Pulse"
+echo -e "\033[1;36m" # Set color to cyan
+cat << "EOF"
+ ____  _                _ 
+|  _ \| |              | |
+| |_) | |__   ___  _ __| |_ 
+|  __/| '_ \ / _ \| '__| __|
+| |   | | | | (_) | |  | |_ 
+|_|   |_| |_|\___/|_|   \__| |_| |_| |_|
+EOF
+echo -e "\033[0m" # Reset color
 
-# Function to install the dependencies
-install_dependencies() {
-    echo -e "\033[1mInstalling Django...\033[0m"
-    pip3 install django
-
-    if [ "$1" == "Yes" ]; then
-        echo -e "\033[1mInstalling Django Rest Framework...\033[0m"
-        pip3 install djangorestframework
-    fi
-}
-
-# Function to create a new Django app
-create_app() {
-    app_name=$1
-
-    # Create the app
-    echo -e "\n\033[1mCreating new Django app '$app_name'...\033[0m"
-    python manage.py startapp $app_name
-
-    # Create an empty __init__.py file in the app's migrations directory to avoid errors
-    echo -e "\033[1mCreating empty __init__.py file in migrations directory...\033[0m"
-    touch $app_name/migrations/__init__.py
-}
-
-# Prompt the user for input
+# Provide options for the type of Django boilerplate
 echo -e "\033[1mWelcome to the Django project generator!\033[0m"
-read -p "Want to install Django Rest Framework? (Yes/No) " install_drf
+echo -e "\033[1mCreated by thewolfcommander for the community :)\033[0m"
+
+# Step 1: Ask for project name and GitHub repository link
 read -p "Enter the name of your project: " project_name
-read -p "Enter the author of the project: " author
-read -p "Enter the directory for the project (enter '.' for current directory): " directory
+read -p "Enter your new GitHub repository link (optional): " github_repo
 
-# Create the virtual environment based on the user's OS
-echo -e "\n\033[1mCreating virtual environment...\033[0m"
-python3 -m pip3 install virtualenv
-python3 -m virtualenv venv
-
-# Activate the virtual environment
-echo -e "\n\033[1mActivating virtual environment...\033[0m"
-# TODO: fix this for zsh shells
-source venv/bin/activate
-
-# Install the required dependencies
-install_dependencies $install_drf
-
-# Create the project with the name and author provided by the user
-echo -e "\n\033[1mCreating Django project '$project_name'...\033[0m"
-django-admin startproject $project_name .
-
-# Create the requirements.txt file using only the dependencies installed in the virtual environment
-echo -e "\n\033[1mGenerating requirements.txt file...\033[0m"
-pip freeze > requirements.txt
-
-# Create a new Django app
-read -p "Want to create a new Django app? (Yes/No) " create_app
-
-if [ "$create_app" == "Yes" ]; then
-    read -p "Enter the name of the app: " app_name
-    create_app $app_name
+# Validate project name (only alphabets and underscores allowed)
+if ! [[ $project_name =~ ^[a-zA-Z_]+$ ]]; then
+    echo "Invalid project name. Project name should only contain alphabets and underscores."
+    exit 1
 fi
 
-# Run the Django development server
-echo -e "\n\033[1mStarting Django development server...\033[0m"
-python manage.py runserver
+# Ask the user to choose a directory for the project
+default_directory=$(dirname $(dirname $(realpath $0)))
+read -p "Enter the directory for the project (default: $default_directory): " chosen_directory
+chosen_directory=${chosen_directory:-$default_directory}
 
-# Print "Pulse" in multi-colors to celebrate the successful project creation
-echo -e "Project Succesfully Created by \n\033[1m\033[38;5;196mP\033[38;5;208mu\033[38;5;220ml\033[38;5;46ms\033[38;5;48mE\033[38;5;93m!\033[0m\033[1m\033[38;5;196mP\033[38;5;208mu\033[38;5;220ml\033[38;5;46ms\033[38;5;48mE\033[38;5;93m!\033[0m - Made with Love by Manoj"
+read -p "Enter a description for your project (Optional): " project_description
+
+echo "Please choose the type of Django boilerplate you want to use:"
+echo "1) Simple Django app with SQLite3"
+echo "2) Simple Django app with PostgreSQL"
+echo "3) Simple Django App with MongoDB"
+echo "4) Advanced Django App with PostgreSQL"
+echo "5) Advanced Django App with MongoDB"
+read -p "Enter your choice (1-5): " boilerplate_choice
+
+# Ask for preferred Python environment creation method
+echo -e "\033[1mSelect your preferred Python environment setup method:\033[0m"
+echo "1) Poetry"
+echo "2) Virtualenv"
+read -p "Enter your choice (1-2): " env_setup_choice
+
+
+# Execute the appropriate script based on the user's choice
+case $env_setup_choice in
+    1) 
+        ./setup_poetry.sh $boilerplate_choice "$chosen_directory" "$project_name" "$github_repo" "$project_description"
+        ;;
+    2) 
+        ./setup_virtualenv.sh $boilerplate_choice "$chosen_directory" "$project_name" "$github_repo" "$project_description"
+        ;;
+    *)
+        echo "Invalid choice. Exiting."
+        exit 1
+        ;;
+esac
+
+read -p "Do you want to open this project in VS Code? (Y/y): " open_in_vs_code
+
+if [[ "$open_in_vs_code" == "Y" || "$open_in_vs_code" == "y" ]]; then
+    code "$chosen_directory/$project_name"
+fi

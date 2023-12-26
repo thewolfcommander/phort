@@ -9,6 +9,7 @@ project_description=$5
 
 
 echo "Project will be set up in: $chosen_directory/$project_name"
+echo "Git Remote Link: $github_repo"
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Constants
@@ -16,6 +17,14 @@ requirements_file="${script_dir}/boilerplates/${boilerplate_choice}/requirements
 boilerplate_script="${script_dir}/boilerplates/${boilerplate_choice}/execute.sh"
 helpers_dir="${script_dir}/helpers"
 project_dir="${chosen_directory}/$project_name"
+
+# Helper functions
+# Convert Unix path to Windows path if needed
+convert_path_to_windows() {
+    local unix_path=$1
+    local win_path=$(echo $unix_path | sed -e 's|^/c|C:|' -e 's|/|\\\\|g')
+    echo $win_path
+}
 
 # Creating project directory
 cd "$chosen_directory"
@@ -54,6 +63,7 @@ case "$(uname -s)" in
         source venv/bin/activate
         ;;
     CYGWIN*|MINGW32*|MSYS*|MINGW*)
+        boilerplate_script=$(convert_path_to_windows "$boilerplate_script")
         source venv/Scripts/activate
         ;;
     *)
@@ -77,10 +87,20 @@ fi
 # Freeze the requirements to file
 pip freeze > "$project_dir/requirements.txt"
 
+# Commiting the initial results
+git add .
+git commit -m "1.0.0/chore: Initial Commit for the project"
+
+# Pushing the initial changes to Git Remote
+if [ -n "$github_repo" ]; then
+    git remote add origin $github_repo
+    git push -u origin master
+fi
+
 # Step 5: Pass control to another script to generate the boilerplate
 if [ -f "$boilerplate_script" ]; then
     echo "Executing boilerplate setup script: $boilerplate_script"
-    bash $boilerplate_script "$chosen_directory" "$project_name"
+    sh $boilerplate_script "$project_dir" "$project_name"
 else
     echo "Boilerplate script not found for the selected choice."
     exit 1

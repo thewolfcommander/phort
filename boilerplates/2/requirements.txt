@@ -1,0 +1,4 @@
+Django
+python-dotenv
+psycopg2-binary
+# Add any other dependencies your project might need

@@ -1,0 +1,4 @@
+Django
+python-dotenv
+djongo
+# Add any other dependencies your project might need

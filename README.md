@@ -7,15 +7,15 @@ Welcome to the Best Django Boilerplate, a comprehensive setup for your Django pr
 
 This boilerplate offers several choices for setting up your Django project:
 
-1\. Simple Django app with SQLite3
+1\. Simple Django app with SQLite3 - [Read more](./boilerplates/1/info.md)
 
-2\. Simple Django app with PostgreSQL
+2\. Simple Django app with PostgreSQL - [Read more](./boilerplates/2/info.md)
 
-3\. Simple Django App with MongoDB
+3\. Simple Django App with MongoDB - [Read more](./boilerplates/3/info.md)
 
-4\. Advanced Django App with PostgreSQL
+4\. Advanced Django App with PostgreSQL - [Read more](./boilerplates/4/info.md)
 
-5\. Advanced Django App with MongoDB
+5\. Advanced Django App with MongoDB - [Read more](./boilerplates/5/info.md)
 
 Each option is tailored to suit different project requirements, from basic to advanced needs.
 

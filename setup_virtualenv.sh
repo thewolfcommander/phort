@@ -5,11 +5,13 @@ chosen_directory=$2
 project_name=$3
 github_repo=$4
 
-echo "Project will be set up in: $chosen_directory"
+echo "Project will be set up in: $chosen_directory/$project_name"
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Change to the chosen directory
 cd "$chosen_directory"
+mkdir "$project_name"
+cd "$project_name"
 
 # ... [rest of the script]
 

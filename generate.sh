@@ -27,7 +27,7 @@ if ! [[ $project_name =~ ^[a-zA-Z_]+$ ]]; then
 fi
 
 # Ask the user to choose a directory for the project
-default_directory=$(dirname $(realpath $0))/..
+default_directory=$(dirname $(dirname $(realpath $0)))
 read -p "Enter the directory for the project (default: $default_directory): " chosen_directory
 chosen_directory=${chosen_directory:-$default_directory}
 

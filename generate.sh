@@ -33,12 +33,10 @@ read -p "Enter your choice (1-2): " env_setup_choice
 # Execute the appropriate script based on the user's choice
 case $env_setup_choice in
     1) 
-        echo "Setting up the environment using Poetry..."
-        ./setup_poetry.sh
+        ./setup_poetry.sh $boilerplate_choice
         ;;
     2) 
-        echo "Setting up the environment using Virtualenv..."
-        ./setup_virtualenv.sh
+        ./setup_virtualenv.sh $boilerplate_choice
         ;;
     *)
         echo "Invalid choice. Exiting."

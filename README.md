@@ -1,6 +1,3 @@
-Creating a detailed `README.md` for your Django boilerplate project involves outlining instructions for all choices and configurations necessary to set up the projects. Below is a template for such a README. You should customize it to fit the specific details and requirements of your project setups.
-
----
 
 # Best Django Boilerplate
 

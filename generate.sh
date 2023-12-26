@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Greet with ASCII art "Pulse"
+# Greet with ASCII art "Phort"
 echo -e "\033[1;36m" # Set color to cyan
 cat << "EOF"
  ____  _                _ 

@@ -1,7 +1,7 @@
 
-# Best Django Boilerplate
+# Phort - The Best Django Boilerplate
 
-Welcome to the Best Django Boilerplate, a comprehensive setup for your Django projects. This README provides instructions on how to use the boilerplate to set up various Django projects, including configurations for different databases and advanced setups.
+Welcome to Phort, the Best Django Boilerplate, a comprehensive setup for your Django projects. This README provides instructions on how to use the boilerplate to set up various Django projects, including configurations for different databases and advanced setups.
 
 ## Overview
 

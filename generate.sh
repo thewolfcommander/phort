@@ -61,3 +61,9 @@ case $env_setup_choice in
         exit 1
         ;;
 esac
+
+read -p "Do you want to open this project in VS Code? (Y/y): " open_in_vs_code
+
+if [[ "$open_in_vs_code" == "Y" || "$open_in_vs_code" == "y" ]]; then
+    code "$chosen_directory/$project_name"
+fi

@@ -91,12 +91,6 @@ pip freeze > "$project_dir/requirements.txt"
 git add .
 git commit -m "1.0.0/chore: Initial Commit for the project"
 
-# Pushing the initial changes to Git Remote
-if [ -n "$github_repo" ]; then
-    git remote add origin $github_repo
-    git push -u origin master
-fi
-
 # Step 5: Pass control to another script to generate the boilerplate
 if [ -f "$boilerplate_script" ]; then
     echo "Executing boilerplate setup script: $boilerplate_script"
@@ -104,4 +98,10 @@ if [ -f "$boilerplate_script" ]; then
 else
     echo "Boilerplate script not found for the selected choice."
     exit 1
+fi
+
+# Pushing the initial changes to Git Remote
+if [ -n "$github_repo" ]; then
+    git remote add origin $github_repo
+    git push -u origin master
 fi

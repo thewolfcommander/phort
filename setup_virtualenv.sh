@@ -1,6 +1,21 @@
 #!/bin/bash
 
 boilerplate_choice=$1
+chosen_directory=$2
+project_name=$3
+github_repo=$4
+
+echo "Project will be set up in: $chosen_directory"
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+# Change to the chosen directory
+cd "$chosen_directory"
+
+# ... [rest of the script]
+
+# Use absolute paths for boilerplate files
+requirements_file="${script_dir}/boilerplates/${boilerplate_choice}/requirements.txt"
+boilerplate_script="${script_dir}/boilerplates/${boilerplate_choice}/execute.sh"
 
 # Step 1: Install virtualenv if not already
 if ! command -v virtualenv &> /dev/null
